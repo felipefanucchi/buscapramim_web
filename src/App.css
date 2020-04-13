@@ -51,3 +51,9 @@
 .container .panel form button:hover {
   opacity: 0.7;
 }
+
+.container .panel .error {
+  color: #EC2041;
+  margin-bottom: 10px;
+  display: inline-block;
+}

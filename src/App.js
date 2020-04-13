@@ -11,6 +11,14 @@ function App() {
   async function handleSubmit(event) {
     event.preventDefault();
 
+    const url = new URL(window.location.href);
+
+    const reset_token = url.searchParams.get('reset_token') || '';
+    const email = url.searchParams.get('email') || '';
+
+    setErrorLength(false);
+    setErrorMatch(false);
+
     if (password.length <= 6 || passwordMatch.length <= 6) {
       setErrorLength(true);
       return;
@@ -22,6 +30,13 @@ function App() {
     }
 
     try {
+      const response = await api.put('reset_password', {
+        email,
+        password,
+        reset_token
+      });
+
+      console.log(response);
     } catch(err) {
     }
   }
