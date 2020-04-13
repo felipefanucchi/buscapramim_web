@@ -1,4 +1,6 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
 import {api} from './api';
 
@@ -7,6 +9,11 @@ function App() {
   const [passwordMatch, setPasswordMatch] = useState('');
   const [errorMatch, setErrorMatch] = useState(false);
   const [errorLength, setErrorLength] = useState(false);
+  const [success, setSuccess] = useState(false);
+
+  function showToast(message) {
+    toast(message);
+  }
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -30,18 +37,26 @@ function App() {
     }
 
     try {
-      const response = await api.put('reset_password', {
+      await api.put('reset_password', {
         email,
         password,
         reset_token
       });
 
-      console.log(response);
+      setSuccess(true);
     } catch(err) {
+      showToast(err.response.data.error || 'Tente novamente mais tarde.');
     }
   }
 
-  return (
+  return success ? (
+    <div className="container">
+      <h1>Busca <strong>pra</strong>mim</h1>
+      <div className="panel">
+        <h1 className="success">Senha Alterada com sucesso!</h1>
+      </div>
+    </div>
+   ) : (
     <div className="container">
       <h1>Busca<strong>pra</strong>mim</h1>
       <div className="panel">
@@ -56,13 +71,14 @@ function App() {
             value={passwordMatch}
             onChange={e => setPasswordMatch(e.target.value)}
             placeholder="Confirme sua nova senha"/>
-            {errorMatch ? <span class="error">As senhas não coincidem</span> : null}
-            {errorLength ? <span class="error">As senhas deve ter mais que 6 caracteres</span> : null}
+            {errorMatch ? <span className="error">As senhas não coincidem</span> : null}
+            {errorLength ? <span className="error">As senhas deve ter mais que 6 caracteres</span> : null}
           <button type="submit">Confirmar</button>
         </form>
       </div>
+      <ToastContainer />
     </div>
-  );
+   );
 }
 
 export default App;
