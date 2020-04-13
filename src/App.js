@@ -45,7 +45,12 @@ function App() {
 
       setSuccess(true);
     } catch(err) {
-      showToast(err.response.data.error || 'Tente novamente mais tarde.');
+      if (err.response) {
+        showToast(err.response.data.error);
+        return
+      }
+
+      showToast('Erro, Tente novamente mais tarde');
     }
   }
 
