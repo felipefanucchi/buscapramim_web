@@ -14,7 +14,7 @@ function App() {
     const url = new URL(window.location.href);
 
     const reset_token = url.searchParams.get('reset_token') || '';
-    const email = url.searchParams.get('email') || '';
+    const email = url.searchParams.get('user') || '';
 
     setErrorLength(false);
     setErrorMatch(false);
